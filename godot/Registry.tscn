@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://psex7vpmdbm8"]
+
+[ext_resource type="Script" path="res://Registry.gd" id="1_l6qjs"]
+
+[node name="Registry" type="HBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_l6qjs")
+
+[node name="B3" type="TextureRect" parent="."]
+layout_mode = 2
+
+[node name="B2" type="TextureRect" parent="."]
+layout_mode = 2
+
+[node name="B1" type="TextureRect" parent="."]
+layout_mode = 2
+
+[node name="B0" type="TextureRect" parent="."]
+layout_mode = 2
+
+[node name="Button" type="TextureButton" parent="."]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+ignore_texture_size = true
+stretch_mode = 5
