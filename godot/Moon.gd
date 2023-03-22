@@ -1,15 +1,20 @@
 extends VBoxContainer
 
 var _texture_back = load("res://assets/Back.png")
+var _textures_goals = []
 
-const TILE_SIZE = Vector2(60,60)
+const _tile_size = Vector2(60,60)
+
+const _ops = {
+	"H": ["DEC", "INC", "ROL", "ROR", "NOT"],
+	"L": ["MOV", "OR", "AND", "XOR"]
+}
+const _atomic = ["DEC", "INC", "ROL", "ROR", "NOT"]
 
 enum State {Start, Argument, Operation}
 var state : State = State.Start
 var operation : String
 var argument : String
-
-const atomic = ["DEC", "INC", "ROL", "ROR", "NOT"]
 
 var registries = {
 	"A": "1010",
@@ -22,31 +27,22 @@ func _ready():
 	_Energy_setup()
 	_Key_setup()
 	_Goals_setup()
+	for idx in range(16):
+		_textures_goals.append(load("res://assets/goals/%02d.png" % idx))
 	
 	for id in ["A", "B", "C", "D"]:
-		_Registries_setup($Display/Registries.get_node("R%s" % id), id)
+		var node = $Display/Registries.get_node("R%s" % id)
+		_Registries_setup(node, id)
+		node.get_node("Button").pressed.connect(self._on_reg_pressed.bind(id))
 
-	for id in ["DEC", "INC", "ROL", "ROR", "NOT"]:
-		_Operations_setup($Operations/OH.get_node(id), id)
+	for row in _ops:
+		var rnode = $Operations.get_node("O%s" % row)
+		for id in _ops[row]:
+			var node = rnode.get_node(id)
+			_Operations_setup(node, id)
+			node.pressed.connect(self._on_op_pressed.bind(id))
 
-	for id in ["MOV", "OR", "AND", "XOR"]:
-		_Operations_setup($Operations/OL.get_node(id), id)
-
-	$Display/Registries/RA/Button.connect("pressed", self._on_RA_pressed)
-	$Display/Registries/RB/Button.connect("pressed", self._on_RB_pressed)
-	$Display/Registries/RC/Button.connect("pressed", self._on_RC_pressed)
-	$Display/Registries/RD/Button.connect("pressed", self._on_RD_pressed)
-	
-	$Operations/OH/DEC.connect("pressed", self._on_DEC_pressed)
-	$Operations/OH/INC.connect("pressed", self._on_INC_pressed)
-	$Operations/OH/ROL.connect("pressed", self._on_ROL_pressed)
-	$Operations/OH/ROR.connect("pressed", self._on_ROR_pressed)
-	$Operations/OH/NOT.connect("pressed", self._on_NOT_pressed)
-	$Operations/OL/MOV.connect("pressed", self._on_MOV_pressed)
-	$Operations/OL/OR.connect("pressed", self._on_OR_pressed)
-	$Operations/OL/AND.connect("pressed", self._on_AND_pressed)
-	$Operations/OL/XOR.connect("pressed", self._on_XOR_pressed)
-	
+	# Write some initial values to the registries, for testing.
 	for id in ["A", "B", "C", "D"]:
 		var rid = "R%s" % id
 		$Display/Registries.get_node(rid).set_Value(registries[id])
@@ -58,7 +54,12 @@ func _ready():
 func _TextureRect_setup(item):
 	item.set_expand_mode(TextureRect.EXPAND_IGNORE_SIZE)
 	item.set_stretch_mode(TextureRect.STRETCH_KEEP_ASPECT_CENTERED)
-	item.set_custom_minimum_size(TILE_SIZE)
+	item.set_custom_minimum_size(_tile_size)
+
+func _TextureButton_setup(item):
+	item.set_ignore_texture_size(true)
+	item.set_stretch_mode(TextureButton.STRETCH_KEEP_ASPECT_CENTERED)
+	item.set_custom_minimum_size(_tile_size)
 
 func _Energy_setup():
 	for idx in range(6):
@@ -80,11 +81,6 @@ func _Goals_setup():
 		item.set_texture(_texture_back)
 		_TextureRect_setup(item)
 
-func _TextureButton_setup(item):
-	item.set_ignore_texture_size(true)
-	item.set_stretch_mode(TextureButton.STRETCH_KEEP_ASPECT_CENTERED)
-	item.set_custom_minimum_size(TILE_SIZE)
-	
 func _Registries_setup(item, id):
 	for idx in range(4):
 		_TextureRect_setup(item.get_node("B%d" % idx))
@@ -102,8 +98,8 @@ func _Operations_setup(item, id):
 # Process
 #
 
-func _process(delta):
-	pass
+#func _process(delta):
+#	pass
 
 func _int2bin(value):
 	var out = ""
@@ -149,68 +145,17 @@ func _compute_operation_on(reg):
 				_:
 					assert(false, "Unknown operation!")
 
-#
-# Registries
-#
-
 func _on_reg_pressed(id):
-	var item = $Display/Registries.get_node("R%s" % id)
-	if state == State.Operation:
-		_compute_operation_on(id)
-		item.set_Value(registries[id])
-		state = State.Start
-		return
-	if state == State.Argument:
-		argument = id
-		state = State.Operation
-
-func _on_RA_pressed():
-	_on_reg_pressed("A")
-
-func _on_RB_pressed():
-	_on_reg_pressed("B")
-
-func _on_RC_pressed():
-	_on_reg_pressed("C")
-
-func _on_RD_pressed():
-	_on_reg_pressed("D")
-
-#
-# Operations
-#
+	match state:
+		State.Operation:
+			_compute_operation_on(id)
+			$Display/Registries.get_node("R%s" % id).set_Value(registries[id])
+			state = State.Start
+		State.Argument:
+			argument = id
+			state = State.Operation
 
 func _on_op_pressed(op):
 	argument = ""
 	operation = op
-	if op in atomic:
-		state = State.Operation
-	else:
-		state = State.Argument
-
-func _on_DEC_pressed():
-	_on_op_pressed("DEC")
-
-func _on_INC_pressed():
-	_on_op_pressed("INC")
-
-func _on_ROL_pressed():
-	_on_op_pressed("ROL")
-
-func _on_ROR_pressed():
-	_on_op_pressed("ROR")
-
-func _on_NOT_pressed():
-	_on_op_pressed("NOT")
-
-func _on_MOV_pressed():
-	_on_op_pressed("MOV")
-
-func _on_OR_pressed():
-	_on_op_pressed("OR")
-
-func _on_AND_pressed():
-	_on_op_pressed("AND")
-
-func _on_XOR_pressed():
-	_on_op_pressed("XOR")
+	state = State.Operation if op in _atomic else State.Argument
