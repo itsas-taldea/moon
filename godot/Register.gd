@@ -1,9 +1,9 @@
 extends HBoxContainer
 
-class_name Registry
+class_name Register
 
-var _texture_on : Texture2D = load("res://assets/registries/ON.png")
-var _texture_off : Texture2D = load("res://assets/registries/OFF.png")
+var _texture_on : Texture2D = load("res://assets/registers/ON.png")
+var _texture_off : Texture2D = load("res://assets/registers/OFF.png")
 
 func _add_child(node, node_name):
 	node.set_name(node_name)

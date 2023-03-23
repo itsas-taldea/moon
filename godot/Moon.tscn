@@ -44,10 +44,10 @@ layout_mode = 2
 [node name="Goals" type="VBoxContainer" parent="Mat/Display"]
 layout_mode = 2
 
-[node name="Registries" type="VBoxContainer" parent="Mat/Display"]
+[node name="Registers" type="VBoxContainer" parent="Mat/Display"]
 layout_mode = 2
 
-[node name="Key" type="HBoxContainer" parent="Mat/Display/Registries"]
+[node name="Key" type="HBoxContainer" parent="Mat/Display/Registers"]
 layout_mode = 2
 
 [node name="HSepMid" type="HSeparator" parent="Mat"]
