@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://delfmfk6gvvf1"]
+[gd_scene load_steps=4 format=3 uid="uid://delfmfk6gvvf1"]
 
 [ext_resource type="Script" path="res://Moon.gd" id="1_7ymtn"]
+[ext_resource type="FontFile" uid="uid://b0mofgntocx20" path="res://assets/Zygo.ttf" id="2_x5x1n"]
 [ext_resource type="Script" path="res://Energy.gd" id="2_y14cr"]
 
 [node name="Moon" type="CenterContainer"]
@@ -20,11 +21,22 @@ grow_vertical = 2
 layout_mode = 2
 script = ExtResource("1_7ymtn")
 
+[node name="Label" type="Label" parent="Mat"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_x5x1n")
+theme_override_font_sizes/font_size = 50
+text = "1110011"
+horizontal_alignment = 1
+
 [node name="ProgressBar" type="ProgressBar" parent="Mat"]
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 max_value = 1.0
 show_percentage = false
+
+[node name="HSepTop" type="HSeparator" parent="Mat"]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
 
 [node name="Display" type="HBoxContainer" parent="Mat"]
 layout_mode = 2
@@ -38,6 +50,10 @@ layout_mode = 2
 [node name="Key" type="HBoxContainer" parent="Mat/Display/Registries"]
 layout_mode = 2
 
+[node name="HSepMid" type="HSeparator" parent="Mat"]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+
 [node name="Operations" type="VBoxContainer" parent="Mat"]
 layout_mode = 2
 alignment = 1
@@ -49,6 +65,10 @@ alignment = 1
 [node name="OL" type="HBoxContainer" parent="Mat/Operations"]
 layout_mode = 2
 alignment = 1
+
+[node name="HSepBot" type="HSeparator" parent="Mat"]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
 
 [node name="Energy" type="HBoxContainer" parent="Mat"]
 layout_mode = 2
