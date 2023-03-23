@@ -43,27 +43,6 @@ layout_mode = 2
 [node name="E5" type="TextureRect" parent="Mat/Energy"]
 layout_mode = 2
 
-[node name="Key" type="HBoxContainer" parent="Mat"]
-layout_mode = 2
-
-[node name="Goal" type="TextureButton" parent="Mat/Key"]
-layout_mode = 2
-
-[node name="K3" type="TextureRect" parent="Mat/Key"]
-layout_mode = 2
-
-[node name="K2" type="TextureRect" parent="Mat/Key"]
-layout_mode = 2
-
-[node name="K1" type="TextureRect" parent="Mat/Key"]
-layout_mode = 2
-
-[node name="K0" type="TextureRect" parent="Mat/Key"]
-layout_mode = 2
-
-[node name="Done" type="TextureRect" parent="Mat/Key"]
-layout_mode = 2
-
 [node name="Display" type="HBoxContainer" parent="Mat"]
 layout_mode = 2
 
@@ -82,7 +61,28 @@ layout_mode = 2
 [node name="G3" type="TextureRect" parent="Mat/Display/Goals"]
 layout_mode = 2
 
+[node name="G4" type="TextureRect" parent="Mat/Display/Goals"]
+layout_mode = 2
+
 [node name="Registries" type="VBoxContainer" parent="Mat/Display"]
+layout_mode = 2
+
+[node name="Key" type="HBoxContainer" parent="Mat/Display/Registries"]
+layout_mode = 2
+
+[node name="K3" type="TextureRect" parent="Mat/Display/Registries/Key"]
+layout_mode = 2
+
+[node name="K2" type="TextureRect" parent="Mat/Display/Registries/Key"]
+layout_mode = 2
+
+[node name="K1" type="TextureRect" parent="Mat/Display/Registries/Key"]
+layout_mode = 2
+
+[node name="K0" type="TextureRect" parent="Mat/Display/Registries/Key"]
+layout_mode = 2
+
+[node name="Goal" type="TextureButton" parent="Mat/Display/Registries/Key"]
 layout_mode = 2
 
 [node name="RA" parent="Mat/Display/Registries" instance=ExtResource("1_ri5gb")]

@@ -9,12 +9,28 @@ const _ops = {
 	"H": ["DEC", "INC", "ROL", "ROR", "NOT"],
 	"L": ["MOV", "OR", "AND", "XOR"]
 }
+
+const _ops_energy = {
+	"DEC": 4,
+	"INC": 4,
+	"ROL": 2,
+	"ROR": 2,
+	"NOT": 2,
+	"MOV": 2,
+	"OR": 1,
+	"AND": 1,
+	"XOR": 1,
+}
+
 const _atomic = ["DEC", "INC", "ROL", "ROR", "NOT"]
 
-enum State {Start, Argument, Operation}
+enum State {Start, Argument, Operation, Done}
 var state : State = State.Start
 var operation : String
 var argument : String
+
+var goals = []
+var slots = []
 
 var registries = {
 	"A": "1010",
@@ -27,7 +43,7 @@ func _ready():
 	_Energy_setup()
 	_Key_setup()
 	_Goals_setup()
-	for idx in range(16):
+	for idx in 16:
 		_textures_goals.append(load("res://assets/goals/%02d.png" % idx))
 	
 	for id in ["A", "B", "C", "D"]:
@@ -51,6 +67,9 @@ func _ready():
 	
 	$Energy.set_Value(5)
 
+	_shuffle()
+	_next_goal()
+
 func _TextureRect_setup(item):
 	item.set_expand_mode(TextureRect.EXPAND_IGNORE_SIZE)
 	item.set_stretch_mode(TextureRect.STRETCH_KEEP_ASPECT_CENTERED)
@@ -62,32 +81,32 @@ func _TextureButton_setup(item):
 	item.set_custom_minimum_size(_tile_size)
 
 func _Energy_setup():
-	for idx in range(6):
+	for idx in 6:
 		_TextureRect_setup($Energy.get_node("E%s" % idx))
 
 func _Key_setup():
-	for idx in range(4):
-		var item = $Key.get_node("K%s" % idx)
+	for idx in 4:
+		var item = $Display/Registries/Key.get_node("K%s" % idx)
 		item.set_texture(load("res://assets/B%s.png" % 2**idx))
 		_TextureRect_setup(item)
 		
 func _Goals_setup():
-	$Key/Goal.set_texture_normal(_texture_back)
-	_TextureButton_setup($Key/Goal)
-	$Key/Done.set_texture(_texture_back)
-	_TextureRect_setup($Key/Done)
-	for idx in range(4):
-		var item = $Display/Goals.get_node("G%s" % idx)
-		item.set_texture(_texture_back)
-		_TextureRect_setup(item)
+	var gnode = $Display/Registries/Key/Goal
+	gnode.pressed.connect(self._on_goal_pressed)
+	gnode.set_texture_normal(_texture_back)
+	_TextureButton_setup(gnode)
+	for idx in 5:
+		var node = $Display/Goals.get_node("G%s" % idx)
+		#node.set_texture(_texture_back)
+		_TextureRect_setup(node)
 
-func _Registries_setup(item, id):
-	for idx in range(4):
-		_TextureRect_setup(item.get_node("B%d" % idx))
-	var btn_item = item.get_node("Button")
-	btn_item.set_texture_normal(load("res://assets/registries/%s.png" % id))
-	btn_item.set_texture_disabled(load("res://assets/registries/%s-err.png" % id))
-	_TextureButton_setup(btn_item)
+func _Registries_setup(node, id):
+	for idx in 4:
+		_TextureRect_setup(node.get_node("B%d" % idx))
+	var btn_node = node.get_node("Button")
+	btn_node.set_texture_normal(load("res://assets/registries/%s.png" % id))
+	btn_node.set_texture_disabled(load("res://assets/registries/%s-err.png" % id))
+	_TextureButton_setup(btn_node)
 
 func _Operations_setup(item, id):
 	item.set_texture_normal(load("res://assets/operations/%s.png" % id))
@@ -145,11 +164,53 @@ func _compute_operation_on(reg):
 				_:
 					assert(false, "Unknown operation!")
 
+func _shuffle():
+	goals = range(16)
+	goals.shuffle()
+	slots = []
+
+func _next_goal():
+	if goals.is_empty():
+		print("Landing was successful! Congratulations!")
+		state = State.Done
+		return
+	slots.push_back(goals.pop_front())
+	_update_slots()
+
+func _update_slots():
+	var len_slots = len(slots)
+	for idx in len_slots:
+		$Display/Goals.get_node("G%s" % idx).set_texture(_textures_goals[slots[idx]])
+	for idx in 5-len_slots:
+		$Display/Goals.get_node("G%s" % (len_slots+idx)).set_texture(_texture_back)
+
+func _check_goal():
+	if registries["A"].bin_to_int() == slots.front():
+		slots.pop_front()
+		if slots.is_empty():
+			_next_goal()
+			return
+		_update_slots()
+
+func _on_goal_pressed():
+	if len(slots) >= 5:
+		# FIXME
+		# This should be handled by changing the texture of the Goal button to let the user know that
+		# all the slots are being used.
+		# If the user clicks on the button, the game should be finished as failing to achieve the objective.
+		# For now, we shuffle and start again.
+		_shuffle()
+	_next_goal()
+
 func _on_reg_pressed(id):
 	match state:
 		State.Operation:
 			_compute_operation_on(id)
 			$Display/Registries.get_node("R%s" % id).set_Value(registries[id])
+			if id == "A":
+				_check_goal()
+				if state == State.Done:
+					return
 			state = State.Start
 		State.Argument:
 			argument = id
