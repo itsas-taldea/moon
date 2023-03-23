@@ -193,6 +193,7 @@ func _update_slots():
 func _check_goal():
 	if registries["A"].bin_to_int() == slots.front():
 		slots.pop_front()
+		$ProgressBar.value = 1-(float(len(goals))/16)
 		if slots.is_empty():
 			_next_goal()
 			return
