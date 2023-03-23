@@ -3,9 +3,11 @@ extends HBoxContainer
 var _texture_empty : Texture2D = load("res://assets/Empty.png")
 var _texture_full : Texture2D = load("res://assets/Full.png")
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	for idx in 6:
+		var node = TextureRect.new()
+		node.set_name("E%s" % idx)
+		self.add_child(node)
 
 func _int_to_texture(val: int):
 	if bool(val):

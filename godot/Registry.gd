@@ -1,7 +1,19 @@
 extends HBoxContainer
 
+class_name Registry
+
 var _texture_on : Texture2D = load("res://assets/registries/ON.png")
 var _texture_off : Texture2D = load("res://assets/registries/OFF.png")
+
+func _add_child(node, node_name):
+	node.set_name(node_name)
+	#node.set_owner(self)
+	self.add_child(node)
+		
+func _ready():
+	for idx in range(3,-1,-1):
+		_add_child(TextureRect.new(), "B%s" % idx)
+	_add_child(TextureButton.new(), "Button")
 
 func _char_to_texture(bit : String):
 	assert(len(bit) == 1, "Bit length must be 1!")

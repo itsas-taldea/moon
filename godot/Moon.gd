@@ -40,23 +40,12 @@ var registries = {
 }
 
 func _ready():
-	_Energy_setup()
-	_Key_setup()
-	_Goals_setup()
 	for idx in 16:
 		_textures_goals.append(load("res://assets/goals/%02d.png" % idx))
-	
-	for id in ["A", "B", "C", "D"]:
-		var node = $Display/Registries.get_node("R%s" % id)
-		_Registries_setup(node, id)
-		node.get_node("Button").pressed.connect(self._on_reg_pressed.bind(id))
-
-	for row in _ops:
-		var rnode = $Operations.get_node("O%s" % row)
-		for id in _ops[row]:
-			var node = rnode.get_node(id)
-			_Operations_setup(node, id)
-			node.pressed.connect(self._on_op_pressed.bind(id))
+	_Energy_setup()
+	_Key_and_Goals_setup()
+	_Registries_setup()
+	_Operations_setup()
 
 	# Write some initial values to the registries, for testing.
 	for id in ["A", "B", "C", "D"]:
@@ -64,7 +53,7 @@ func _ready():
 		$Display/Registries.get_node(rid).set_Value(registries[id])
 	
 	#$Display/Registries/RC.disable()
-	
+
 	$Energy.set_Value(5)
 
 	_shuffle()
@@ -80,27 +69,35 @@ func _TextureButton_setup(item):
 	item.set_stretch_mode(TextureButton.STRETCH_KEEP_ASPECT_CENTERED)
 	item.set_custom_minimum_size(_tile_size)
 
+func _add_child(parent, node, node_name):
+	node.set_name(node_name)
+	parent.add_child(node)
+	return node
+
 func _Energy_setup():
 	for idx in 6:
 		_TextureRect_setup($Energy.get_node("E%s" % idx))
 
-func _Key_setup():
-	for idx in 4:
-		var item = $Display/Registries/Key.get_node("K%s" % idx)
-		item.set_texture(load("res://assets/B%s.png" % 2**idx))
-		_TextureRect_setup(item)
-		
-func _Goals_setup():
-	var gnode = $Display/Registries/Key/Goal
-	gnode.pressed.connect(self._on_goal_pressed)
-	gnode.set_texture_normal(_texture_back)
-	_TextureButton_setup(gnode)
-	for idx in 5:
-		var node = $Display/Goals.get_node("G%s" % idx)
-		#node.set_texture(_texture_back)
+func _Key_and_Goals_setup():
+	for idx in range(3,-1,-1):
+		var node = _add_child($Display/Registries/Key, TextureRect.new(), "K%s" % idx)
+		node.set_texture(load("res://assets/B%s.png" % 2**idx))
 		_TextureRect_setup(node)
 
-func _Registries_setup(node, id):
+	var node = _add_child($Display/Registries/Key, TextureButton.new(), "Goal")
+	node.pressed.connect(self._on_goal_pressed)
+	node.set_texture_normal(_texture_back)
+	_TextureButton_setup(node)
+	for idx in 5:
+		_TextureRect_setup(_add_child($Display/Goals, TextureRect.new(), "G%s" % idx))
+
+func _Registries_setup():
+	for id in ["A", "B", "C", "D"]:
+		var node = _add_child($Display/Registries, Registry.new(), "R%s" % id)
+		_Registry_setup(node, id)
+		node.get_node("Button").pressed.connect(self._on_reg_pressed.bind(id))
+
+func _Registry_setup(node, id):
 	for idx in 4:
 		_TextureRect_setup(node.get_node("B%d" % idx))
 	var btn_node = node.get_node("Button")
@@ -108,7 +105,15 @@ func _Registries_setup(node, id):
 	btn_node.set_texture_disabled(load("res://assets/registries/%s-err.png" % id))
 	_TextureButton_setup(btn_node)
 
-func _Operations_setup(item, id):
+func _Operations_setup():
+	for row in _ops:
+		var rnode = $Operations.get_node("O%s" % row)
+		for id in _ops[row]:
+			var node = _add_child(rnode, TextureButton.new(), id)
+			_Operation_setup(node, id)
+			node.pressed.connect(self._on_op_pressed.bind(id))
+
+func _Operation_setup(item, id):
 	item.set_texture_normal(load("res://assets/operations/%s.png" % id))
 	#item.set_texture_disabled(load("res://assets/operations/%s-err.png" % id))
 	_TextureButton_setup(item)
