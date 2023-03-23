@@ -184,10 +184,11 @@ func _next_goal():
 
 func _update_slots():
 	var len_slots = len(slots)
-	for idx in len_slots:
-		$Display/Goals.get_node("G%s" % idx).set_texture(_textures_goals[slots[idx]])
+	$Display/Goals.get_node("G0").set_texture(_textures_goals[slots.front()])
+	for idx in range(1, len_slots, 1):
+		$Display/Goals.get_node("G%s" % idx).set_texture(_texture_back)
 	for idx in 5-len_slots:
-		$Display/Goals.get_node("G%s" % (len_slots+idx)).set_texture(_texture_back)
+		$Display/Goals.get_node("G%s" % (len_slots+idx)).set_texture(null)
 
 func _check_goal():
 	if registries["A"].bin_to_int() == slots.front():
