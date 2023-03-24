@@ -48,6 +48,7 @@ MOON is recommended for **10-year-olds** and older, for **1 to 4 players** and a
   rulebook/events
   rulebook/competitive
   rulebook/extrabits
+  rulebook/FAQ
 
 .. toctree::
   :caption: Appendix

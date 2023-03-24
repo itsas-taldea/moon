@@ -1,5 +1,7 @@
 # To Do
 
+- `mv blueprints/moon-ra-err.svg blueprints/moon-ra-warn.svg` and change the colour to yellow.
+
 ## Infra
 
 - Add CI:

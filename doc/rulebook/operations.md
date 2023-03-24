@@ -112,9 +112,7 @@ It **copies** only the **switched-on** bits from one register to another.
 
 ### NOR
 
-```{todo}
-Describe `NOR`.
-```
+See {ref}`faq:negated`.
 
 ## AND
 
@@ -128,9 +126,7 @@ It **copies** only the **switched-off** bits from one register to another.
 
 ### NAND
 
-```{todo}
-Describe `NAND`.
-```
+See {ref}`faq:negated`.
 
 ## XOR
 
@@ -144,18 +140,12 @@ It **copies** only the **switched-on** bits from one register to another, but if
 
 ### XNOR
 
-```{todo}
-Describe `XNOR`.
-```
+See {ref}`faq:negated`.
 
 ## ADD
 
-```{todo}
-Describe `ADD`.
-```
+See {ref}`faq:addsub`.
 
 ## SUB
 
-```{todo}
-Describe `SUB`.
-```
+See {ref}`faq:addsub`.
