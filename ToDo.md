@@ -2,10 +2,8 @@
 
 ## Infra
 
-- Add doc subdir (Sphinx).
 - Add CI:
   - Build the docs and push to gh-pages.
-  - Build the game for desktop, web and mobile and deploy to gh-pages and to a nightly release.
 
 ## Code
 
