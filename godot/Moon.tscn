@@ -1,19 +1,16 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=3 uid="uid://dqndbneyibw2m"]
 
-[ext_resource path="res://assets/Zygo.ttf" type="DynamicFontData" id=1]
-
-[sub_resource type="DynamicFont" id=1]
-size = 96
-font_data = ExtResource( 1 )
+[ext_resource type="FontFile" uid="uid://d1op8iyv28yqt" path="res://assets/Zygo.ttf" id="1_0nj85"]
 
 [node name="CenterContainer" type="CenterContainer"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Label" type="Label" parent="."]
-margin_left = 331.0
-margin_top = 251.0
-margin_right = 692.0
-margin_bottom = 348.0
-custom_fonts/font = SubResource( 1 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_0nj85")
+theme_override_font_sizes/font_size = 128
 text = "1110011"

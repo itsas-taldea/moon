@@ -36,7 +36,7 @@ jobs:
             name: Windows
             upload: godot/dist/win/*
 
-          - preset: Mac OSX
+          - preset: macOS
             path: ./dist/mac/moon.macos.zip
             name: MacOS
             upload: godot/dist/mac/*
@@ -53,7 +53,7 @@ jobs:
           docker run --rm
           -v $(pwd):/wrk -w /wrk/godot
           ghcr.io/itsas-taldea/godot/export
-          gexport --export '${{ matrix.preset }}' '${{ matrix.path }}'
+          gexport --export-release '${{ matrix.preset }}' '${{ matrix.path }}'
 
       - name: '📤 Upload artifact'
         uses: 'actions/upload-artifact@v3'
