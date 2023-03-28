@@ -1,7 +1,7 @@
 FROM ubuntu
 
 ARG GODOT_VERSION='4.0.2'
-ARG GODOT_RELEASES_DOWNLOAD='https://github.com/godotengine/godot/releases/download'
+ARG GODOT_LATEST_DOWNLOAD='https://godotengine.github.io/godot-commit-artifacts/download/godotengine/godot/master'
 
 ENV GODOT_VERSION=$GODOT_VERSION
 
@@ -14,8 +14,8 @@ RUN apt-get update -qq \
  && update-ca-certificates
 
 RUN mkdir /tmp/godot && cd /tmp/godot \
- && curl -fsSL "${GODOT_RELEASES_DOWNLOAD}/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip" -o godot.zip \
- && curl -fsSL "${GODOT_RELEASES_DOWNLOAD}/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz" -o tpl.tpz \
+ && curl -fsSL "${GODOT_LATEST_DOWNLOAD}/linux-editor-mono" -o godot.zip \
+ && curl -fsSL "${GODOT_LATEST_DOWNLOAD}/linux-template-minimal" -o tpl.tpz \
  && unzip godot.zip \
  && mv "Godot_v${GODOT_VERSION}-stable_linux.x86_64" /usr/local/bin/godot \
  && chmod +x /usr/local/bin/godot \
