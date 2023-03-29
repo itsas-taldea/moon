@@ -62,13 +62,55 @@ jobs:
           path: ${{ matrix.upload }}
           if-no-files-found: error
 
+
+  doc:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v3
+
+      - run: python3 -m pip install -r doc/requirements.txt
+
+      - run: make -C doc html
+
+      - name: '📤 Upload artifact'
+        uses: 'actions/upload-artifact@v3'
+        with:
+          name: doc
+          path: doc/_build/html
+          if-no-files-found: error
+
+
+  pages:
+    needs:
+      - build
+      - doc
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v3
+
+      - name: '📥 Download artifacts: doc'
+        uses: actions/download-artifact@v3
+        with:
+          name: doc
+          path: public
+
+      - name: '📥 Download artifacts: HTML5'
+        uses: actions/download-artifact@v3
+        with:
+          name: HTML5
+          path: public/play
+
+      - run: tree public
+
       - name: 🚀 Publish to GitHub Pages
-        if: (github.event_name != 'pull_request') && (matrix.preset == 'HTML5')
+        if: (github.event_name != 'pull_request')
         run: |
-          cd godot/dist/html5/
+          cd public
           touch .nojekyll
           git init
-          cp ../../../.git/config ./.git/config
+          cp ../.git/config ./.git/config
           git add .
           git config --local user.email "godot@GitHubActions"
           git config --local user.name "GitHub Actions"
@@ -82,6 +124,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+
       - uses: actions/checkout@v3
 
       - name: '📥 Download artifacts'

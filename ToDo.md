@@ -2,11 +2,6 @@
 
 - `mv blueprints/moon-ra-err.svg blueprints/moon-ra-warn.svg` and change the colour to yellow.
 
-## Infra
-
-- Add CI:
-  - Build the docs and push to gh-pages.
-
 ## Code
 
 - Static typing.
