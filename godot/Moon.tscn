@@ -4,77 +4,80 @@
 [ext_resource type="FontFile" uid="uid://b0mofgntocx20" path="res://assets/Zygo.ttf" id="2_x5x1n"]
 [ext_resource type="Script" path="res://Energy.gd" id="2_y14cr"]
 
-[node name="Moon" type="CenterContainer"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -160.0
-offset_top = -214.0
-offset_right = 160.0
-offset_bottom = 214.0
+[node name="Mat" type="TabContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+tab_alignment = 1
 
-[node name="Mat" type="VBoxContainer" parent="."]
+[node name="Moon" type="ScrollContainer" parent="."]
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="Moon"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Moon" type="VBoxContainer" parent="Moon/CenterContainer"]
 layout_mode = 2
 script = ExtResource("1_7ymtn")
 
-[node name="Label" type="Label" parent="Mat"]
+[node name="Label" type="Label" parent="Moon/CenterContainer/Moon"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_x5x1n")
 theme_override_font_sizes/font_size = 50
 text = "1110011"
 horizontal_alignment = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="Mat"]
+[node name="ProgressBar" type="ProgressBar" parent="Moon/CenterContainer/Moon"]
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 max_value = 1.0
 show_percentage = false
 
-[node name="HSepTop" type="HSeparator" parent="Mat"]
+[node name="HSepTop" type="HSeparator" parent="Moon/CenterContainer/Moon"]
 custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 
-[node name="Display" type="HBoxContainer" parent="Mat"]
+[node name="Display" type="HBoxContainer" parent="Moon/CenterContainer/Moon"]
 layout_mode = 2
 
-[node name="Goals" type="VBoxContainer" parent="Mat/Display"]
+[node name="Goals" type="VBoxContainer" parent="Moon/CenterContainer/Moon/Display"]
 layout_mode = 2
 
-[node name="Registers" type="VBoxContainer" parent="Mat/Display"]
+[node name="Registers" type="VBoxContainer" parent="Moon/CenterContainer/Moon/Display"]
 layout_mode = 2
 
-[node name="Key" type="HBoxContainer" parent="Mat/Display/Registers"]
+[node name="Key" type="HBoxContainer" parent="Moon/CenterContainer/Moon/Display/Registers"]
 layout_mode = 2
 
-[node name="HSepMid" type="HSeparator" parent="Mat"]
+[node name="HSepMid" type="HSeparator" parent="Moon/CenterContainer/Moon"]
 custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 
-[node name="Operations" type="VBoxContainer" parent="Mat"]
+[node name="Operations" type="VBoxContainer" parent="Moon/CenterContainer/Moon"]
 layout_mode = 2
 alignment = 1
 
-[node name="OH" type="HBoxContainer" parent="Mat/Operations"]
+[node name="OH" type="HBoxContainer" parent="Moon/CenterContainer/Moon/Operations"]
 layout_mode = 2
 alignment = 1
 
-[node name="OL" type="HBoxContainer" parent="Mat/Operations"]
+[node name="OL" type="HBoxContainer" parent="Moon/CenterContainer/Moon/Operations"]
 layout_mode = 2
 alignment = 1
 
-[node name="HSepBot" type="HSeparator" parent="Mat"]
+[node name="HSepBot" type="HSeparator" parent="Moon/CenterContainer/Moon"]
 custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 
-[node name="Energy" type="HBoxContainer" parent="Mat"]
+[node name="Energy" type="HBoxContainer" parent="Moon/CenterContainer/Moon"]
 layout_mode = 2
 script = ExtResource("2_y14cr")
 
-[node name="EnergyBar" type="ProgressBar" parent="Mat"]
+[node name="EnergyBar" type="ProgressBar" parent="Moon/CenterContainer/Moon"]
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 show_percentage = false
