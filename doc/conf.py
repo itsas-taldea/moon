@@ -54,9 +54,11 @@ html_css_files = [
       "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/brands.min.css",
 ]
 
+ref_name = environ.get("GITHUB_REF_NAME", "main")
+
 html_theme_options = {
     "source_repository": "https://github.com/itsas-taldea/moon",
-    "source_branch": environ.get("GITHUB_REF_NAME", "main"),
+    "source_branch": ref_name,
     "source_directory": "doc",
     "sidebar_hide_name": True,
     "footer_icons": [
@@ -103,5 +105,5 @@ extlinks = {
    'ghsharp': ('https://github.com/itsas-taldea/moon/issues/%s', '#%s'),
    'ghissue': ('https://github.com/itsas-taldea/moon/issues/%s', 'issue #%s'),
    'ghpull':  ('https://github.com/itsas-taldea/moon/pull/%s', 'pull request #%s'),
-   'ghsrc':   ('https://github.com/itsas-taldea/moon/blob/main/%s', '%s')
+   'ghsrc':   (f'https://github.com/itsas-taldea/moon/blob/{ref_name}/%s', '%s')
 }
