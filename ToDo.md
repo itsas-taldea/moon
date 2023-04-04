@@ -21,10 +21,20 @@
   - reset 2
   - reset 4
   - reset 8
-- Use custom classes based on `TextureRect` and `TextureButton`, instead of calling `_TextureRect_setup` and `_TextureButton_setup`.
+- Use custom classes based on `TextureRect` and `TextureButton`, instead of calling `Utils.TextureRect_setup` and `Utils.TextureButton_setup`.
 
 ## Interface
 
-- Make the whole registry be a button (the label and all the bits), not only the label.
 - Adjust spacing and scaling to better use the screen.
-- Add banner/title.
+- Add loading banner/title.
+
+### MOON
+
+- Make the whole registry be a button (the label and all the bits), not only the label.
+- Add settings modal/window.
+- Add hint overlays to show which buttons are clickable.
+- Add success or failure splash screen.
+
+### LUNA
+
+- Sync the RAM grid and the TextEdit.
