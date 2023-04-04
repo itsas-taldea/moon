@@ -28,20 +28,3 @@ as long as the assets and logic are designed beforehand!
 
 The development/contribution approach in this repository is to commit early and push often.
 Should you find any issue or if you are willing to contribute, [let us know](https://github.com/itsas-taldea/moon/issues)!
-
-## References
-
-- [compus.deusto.es](https://compus.deusto.es/)
-  - [compus.deusto.es/moon](https://compus.deusto.es/moon/)
-    - FAQ:
-      - [tiny.cc/moon-faq-en](http://tiny.cc/moon-faq-en)
-      - [tiny.cc/moon-faq-es](https://tiny.cc/moon-faq-es)
-    - [tiny.cc/moon-howto](http://tiny.cc/moon-howto)
-    - [kickstarter.com/projects/garaizar/moon-0](https://www.kickstarter.com/projects/garaizar/moon-0)
-    - [boardgamegeek.com/boardgame/276161/moon](https://boardgamegeek.com/boardgame/276161/moon)
-  - [compus.deusto.es/nand](https://compus.deusto.es/nand/)
-    - [kickstarter.com/projects/garaizar/archers-of-nand](https://www.kickstarter.com/projects/garaizar/archers-of-nand)
-    - [boardgamegeek.com/boardgame/309600/archers-nand](https://boardgamegeek.com/boardgame/309600/archers-nand)
-  - [compus.deusto.es/activity-book](https://compus.deusto.es/activity-book/)
-    - [COMPUS Activity Book](https://compus.deusto.es/wp-content/plugins/pdf-poster/pdfjs/web/viewer.html?file=https://compus.deusto.es/wp-content/uploads/2021/04/COMPUS-ACTIVITY-BOOK-ENG.pdf&download=true&print=vera&openfile=false)
-- [kickstarter.com/projects/garaizar/nobel-run](https://www.kickstarter.com/projects/garaizar/nobel-run)
