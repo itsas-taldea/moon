@@ -1,6 +1,6 @@
 extends VBoxContainer
 
-var _texture_back = load("res://assets/Back.png")
+const _texture_back = preload("res://assets/Back.png")
 var _textures_goals = []
 
 const _ops = {
@@ -22,14 +22,12 @@ const _ops_energy = {
 
 const _atomic = ["DEC", "INC", "ROL", "ROR", "NOT"]
 
-enum State {Start, Argument, Operation, Done}
+enum State {Start, StandBy, Argument, Operation}
 var state : State = State.Start
 var operation : String
 var argument : String
 
 var goals = []
-var slots = []
-
 var registers = {}
 
 var wordlength : int = 4
@@ -37,9 +35,10 @@ var wordlength : int = 4
 func _ready():
 	for idx in 16:
 		_textures_goals.append(load("res://assets/goals/%02d.png" % idx))
-	_Key_and_Goals_setup()
-	_Registers_setup()
 	_Operations_setup()
+	_Registers_setup()
+	_Key_and_Goals_setup()
+	_update_progress(0)
 
 	# Write some initial values to the Registers, for testing.
 	# The actual implementation depends on the difficulty.
@@ -51,9 +50,6 @@ func _ready():
 
 	$Energy.Energy = 5
 
-	_shuffle()
-	_next_goal()
-
 func _Key_and_Goals_setup():
 	for idx in range(wordlength-1,-1,-1):
 		var node = Utils.Add_named_child($Display/Registers/Key, TextureRect.new(), "K%d" % idx)
@@ -64,8 +60,6 @@ func _Key_and_Goals_setup():
 	node.pressed.connect(self._on_goal_pressed)
 	node.set_texture_normal(_texture_back)
 	Utils.TextureButton_setup(node)
-	for idx in 5:
-		Utils.TextureRect_setup(Utils.Add_named_child($Display/Goals, TextureRect.new(), "G%s" % idx))
 
 func _Registers_setup():
 	for id in ["A", "B", "C", "D"]:
@@ -82,20 +76,13 @@ func _Operations_setup():
 		var rnode = $Operations.get_node("O%s" % row)
 		for id in _ops[row]:
 			var node = Utils.Add_named_child(rnode, TextureButton.new(), id)
-			_Operation_setup(node, id)
+			node.set_texture_normal(load("res://assets/operations/%s.png" % id))
+			Utils.TextureButton_setup(node)
 			node.pressed.connect(self._on_op_pressed.bind(id))
-
-func _Operation_setup(item, id):
-	item.set_texture_normal(load("res://assets/operations/%s.png" % id))
-	#item.set_texture_disabled(load("res://assets/operations/%s-err.png" % id))
-	Utils.TextureButton_setup(item)
 
 #
 # Process
 #
-
-#func _process(delta):
-#	pass
 
 func _compute_operation_on(reg):
 	var rnode = registers[reg]
@@ -129,42 +116,49 @@ func _compute_operation_on(reg):
 func _shuffle():
 	goals = range(2**wordlength)
 	goals.shuffle()
-	slots = []
+	$Workload.reset()
 
 func _next_goal():
 	if goals.is_empty():
 		print("Landing was successful! Congratulations!")
-		state = State.Done
+		$Display/Registers/Key/Goal.set_texture_normal(_texture_back)
+		_update_progress()
+		state = State.Start
 		return
-	slots.push_back(goals.pop_front())
-	_update_slots()
+	$Workload.push(goals.pop_front())
+	_update_progress()
 
-func _update_slots():
-	var len_slots = len(slots)
-	$Display/Goals.get_node("G0").set_texture(_textures_goals[slots.front()])
-	for idx in range(1, len_slots, 1):
-		$Display/Goals.get_node("G%s" % idx).set_texture(_texture_back)
-	for idx in 5-len_slots:
-		$Display/Goals.get_node("G%s" % (len_slots+idx)).set_texture(null)
+func _update_progress(val = NAN):
+	$Workload.update()
+	var load = $Workload.monitor()
+	$ProgressBar.value = 1-(float(len(goals)+load)/(2**wordlength)) if is_nan(val) else val
+	if load != 0:
+		$Display/Registers/Key/Goal.set_texture_normal(_textures_goals[$Workload.next()])
 
 func _check_goal():
-	if registers["A"].Value == slots.front():
-		slots.pop_front()
-		$ProgressBar.value = 1-(float(len(goals))/16)
-		if slots.is_empty():
+	if $Workload.match(registers["A"].Value):
+		if $Workload.monitor() == 0:
 			_next_goal()
 			return
-		_update_slots()
+		_update_progress()
 
 func _on_goal_pressed():
-	if len(slots) >= 5:
-		# FIXME
-		# This should be handled by changing the texture of the Goal button to let the user know that
-		# all the slots are being used.
-		# If the user clicks on the button, the game should be finished as failing to achieve the objective.
-		# For now, we shuffle and start again.
-		_shuffle()
-	_next_goal()
+	match state:
+		State.Start:
+			_shuffle()
+			_next_goal()
+			state = State.StandBy
+		_:
+			if $Workload.critical():
+				# FIXME
+				# This should be handled by changing the texture of the Goal button to let the user
+				# know that all the slots are being used.
+				# If the user clicks on the button, the game should be finished as failing to
+				# achieve the objective.
+				# For now, we shuffle and start again.
+				_shuffle()
+				_update_progress()
+			_next_goal()
 
 func _on_reg_pressed(id):
 	match state:
@@ -172,9 +166,9 @@ func _on_reg_pressed(id):
 			_compute_operation_on(id)
 			if id == "A":
 				_check_goal()
-				if state == State.Done:
+				if state == State.Start:
 					return
-			state = State.Start
+			state = State.StandBy
 		State.Argument:
 			argument = id
 			state = State.Operation

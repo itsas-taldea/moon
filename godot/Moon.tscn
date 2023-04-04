@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://delfmfk6gvvf1"]
+[gd_scene load_steps=8 format=3 uid="uid://delfmfk6gvvf1"]
 
 [ext_resource type="Script" path="res://Moon.gd" id="1_7ymtn"]
 [ext_resource type="FontFile" uid="uid://b0mofgntocx20" path="res://assets/Zygo.ttf" id="2_x5x1n"]
 [ext_resource type="Script" path="res://Energy.gd" id="2_y14cr"]
+[ext_resource type="Script" path="res://Workload.gd" id="3_k8wkp"]
 [ext_resource type="Script" path="res://Luna.gd" id="4_6dko7"]
 [ext_resource type="Script" path="res://RAM.gd" id="5_sccyn"]
 [ext_resource type="Texture2D" uid="uid://brjnf6m6rwq8n" path="res://assets/Luna-low.png" id="6_7macg"]
@@ -39,6 +40,11 @@ custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 max_value = 1.0
 show_percentage = false
+
+[node name="Workload" type="HBoxContainer" parent="Moon/CenterContainer/Moon"]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+script = ExtResource("3_k8wkp")
 
 [node name="HSepTop" type="HSeparator" parent="Moon/CenterContainer/Moon"]
 custom_minimum_size = Vector2(0, 15)
@@ -91,6 +97,7 @@ script = ExtResource("4_6dko7")
 
 [node name="CPU" type="VBoxContainer" parent="Luna/Luna"]
 layout_mode = 2
+alignment = 1
 
 [node name="Label" type="Label" parent="Luna/Luna/CPU"]
 layout_mode = 2
