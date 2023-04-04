@@ -30,12 +30,9 @@ var argument : String
 var goals = []
 var slots = []
 
-var registers = {
-	"A": "1010",
-	"B": "0101",
-	"C": "0001",
-	"D": "0011",
-}
+var registers = {}
+
+var wordlength : int = 4
 
 func _ready():
 	for idx in 16:
@@ -46,11 +43,12 @@ func _ready():
 	_Operations_setup()
 
 	# Write some initial values to the Registers, for testing.
-	for id in ["A", "B", "C", "D"]:
-		var rid = "R%s" % id
-		$Display/Registers.get_node(rid).set_Value(registers[id])
-
-	#$Display/Registers/RC.disable()
+	# The actual implementation depends on the difficulty.
+	# Some registers are initialised to zero or one, and others to the value of the first goals.
+	registers["A"].Value = 10
+	registers["B"].Value = 5
+	registers["C"].Value = 1
+	registers["D"].Value = 3
 
 	$Energy.set_Value(5)
 
@@ -62,8 +60,8 @@ func _Energy_setup():
 		Utils.TextureRect_setup($Energy.get_node("E%s" % idx))
 
 func _Key_and_Goals_setup():
-	for idx in range(3,-1,-1):
-		var node = Utils.Add_named_child($Display/Registers/Key, TextureRect.new(), "K%s" % idx)
+	for idx in range(wordlength-1,-1,-1):
+		var node = Utils.Add_named_child($Display/Registers/Key, TextureRect.new(), "K%d" % idx)
 		node.set_texture(load("res://assets/B%s.png" % 2**idx))
 		Utils.TextureRect_setup(node)
 
@@ -76,17 +74,13 @@ func _Key_and_Goals_setup():
 
 func _Registers_setup():
 	for id in ["A", "B", "C", "D"]:
-		var node = Utils.Add_named_child($Display/Registers, Register.new(), "R%s" % id)
-		_Register_setup(node, id)
-		node.get_node("Button").pressed.connect(self._on_reg_pressed.bind(id))
-
-func _Register_setup(node, id):
-	for idx in 4:
-		Utils.TextureRect_setup(node.get_node("B%d" % idx))
-	var btn_node = node.get_node("Button")
-	btn_node.set_texture_normal(load("res://assets/registers/%s.png" % id))
-	btn_node.set_texture_disabled(load("res://assets/registers/%s-err.png" % id))
-	Utils.TextureButton_setup(btn_node)
+		var node = Utils.Add_named_child($Display/Registers, Register.new(wordlength), "R%s" % id)
+		registers[id] = node
+		var btn_node = node.get_node("Button")
+		btn_node.pressed.connect(self._on_reg_pressed.bind(id))
+		btn_node.set_texture_normal(load("res://assets/registers/%s.png" % id))
+		btn_node.set_texture_disabled(load("res://assets/registers/%s-err.png" % id))
+		Utils.TextureButton_setup(btn_node)
 
 func _Operations_setup():
 	for row in _ops:
@@ -108,52 +102,37 @@ func _Operation_setup(item, id):
 #func _process(delta):
 #	pass
 
-func _int2bin(value):
-	var out = ""
-	while value > 0:
-		out = str(value & 1) + out
-		value = value >> 1
-	while len(out) < 4:
-		out = "0" + out
-	# Truncate to four bits (handle Overflow)
-	return out.right(4)
-
 func _compute_operation_on(reg):
-	var val = registers[reg]
+	var rnode = registers[reg]
+	var val = registers[reg].Value
+	var max_mask = 2**wordlength-1
 	match operation:
-		"DEC":
-			var intval = val.bin_to_int()-1
-			if intval<0:
-				# Underflow
-				intval = 15
-			registers[reg] = _int2bin(intval)
-		"INC":
-			registers[reg] = _int2bin(val.bin_to_int()+1)
+		"DEC": # Underflow
+			rnode.Value = max_mask if val==0 else val-1
+		"INC": # Overflow
+			rnode.Value = 0 if val==max_mask else val+1
 		"ROL":
-			registers[reg] = val.right(3) + val[0]
+			rnode.Value = (val*2 & max_mask) | int(bool(val & (1<<(wordlength-1))))
 		"ROR":
-			registers[reg] = val[3] + val.left(3)
+			rnode.Value = val/2 | int(bool(val & 1))<<(wordlength-1)
 		"NOT":
-			for idx in len(val):
-				val[idx]=str(int(!bool(int(val[idx]))))
-			registers[reg] = val
+			rnode.Value = ~val & max_mask
 		"MOV":
-			registers[reg] = registers[argument]
+			rnode.Value = registers[argument].Value
 		_:
-			var intval = val.bin_to_int()
-			var intarg = registers[argument].bin_to_int()
+			var arg = registers[argument].Value
 			match operation:
 				"OR":
-					registers[reg] = _int2bin(intval | intarg)
+					rnode.Value = val | arg
 				"AND":
-					registers[reg] = _int2bin(intval & intarg)
+					rnode.Value = val & arg
 				"XOR":
-					registers[reg] = _int2bin(intval ^ intarg)
+					rnode.Value = val ^ arg
 				_:
 					assert(false, "Unknown operation!")
 
 func _shuffle():
-	goals = range(16)
+	goals = range(2**wordlength)
 	goals.shuffle()
 	slots = []
 
@@ -174,7 +153,7 @@ func _update_slots():
 		$Display/Goals.get_node("G%s" % (len_slots+idx)).set_texture(null)
 
 func _check_goal():
-	if registers["A"].bin_to_int() == slots.front():
+	if registers["A"].Value == slots.front():
 		slots.pop_front()
 		$ProgressBar.value = 1-(float(len(goals))/16)
 		if slots.is_empty():
@@ -196,7 +175,6 @@ func _on_reg_pressed(id):
 	match state:
 		State.Operation:
 			_compute_operation_on(id)
-			$Display/Registers.get_node("R%s" % id).set_Value(registers[id])
 			if id == "A":
 				_check_goal()
 				if state == State.Done:
