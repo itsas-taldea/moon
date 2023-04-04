@@ -1,6 +1,6 @@
 FROM ubuntu
 
-ARG GODOT_VERSION='4.0.1'
+ARG GODOT_VERSION='4.0.2'
 ARG GODOT_RELEASES_DOWNLOAD='https://github.com/godotengine/godot/releases/download'
 
 ENV GODOT_VERSION=$GODOT_VERSION
