@@ -9,7 +9,7 @@ Union and developed by:
 - Școala Gimnazială Ferdinand I (Romania)
 - OEIIZK: Osrodek Edukacji Informatycznej i Zastosowan Komputerow w Warszawie (Poland)
 
-To learn more about the project, visit [compus.deusto.es](https://compus.deusto.es).
+To learn more about the project, visit {web}`compus.deusto.es`.
 
 ```{important}
 The European Commission support for the production of the MOON rulebook does not constitute an endorsement of the contents
