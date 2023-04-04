@@ -17,6 +17,10 @@ which reflects the views only of the authors, and the Commission cannot be held 
 made of the information contained therein.
 ```
 
+The author of the game and the art as whole is {web}`Pablo Garaizar Sagarminaga <www.deusto.es/es/inicio/somos-deusto/equipo/profesores/885/profesor>`, Professor at the University of Deusto.
+
+The game in Java using libGDX was implemented by {gh}`Alejandro Lorite <Lorite>`.
+
 The game in Godot was implemented by {gh}`Unai Martinez-Corral <umarcor>`, a member of the Free Software Group at the
 University of the Basque Country (UPV/EHU).
 
