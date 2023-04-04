@@ -1,5 +1,14 @@
 # MOON: a solo/co-op and competitive computer-related game
 
+<p align="center">
+  <a title="itsas-taldea.github.io/moon" href="https://itsas-taldea.github.io/moon"><img src="https://img.shields.io/website?longCache=true&style=flat-square&label=itsas-taldea.github.io%2Fmoon&logo=GitHub&logoColor=fff&up_color=b1e1e9&up_message=Read%20now%20%E2%9E%9A&url=https%3A%2F%2Fitsas-taldea.github.io%2Fmoon%2Findex.html"></a><!--
+  -->
+  <a title="Apache-2.0" href="https://itsas-taldea.github.io/moon/License.html"><img src="https://img.shields.io/badge/Code-Apache%202.0-97ca00?longCache=true&style=flat-square&logo=Apache&label=Code"></a><!--
+  -->
+  <a title="CC-BY-SA-4.0" href="https://itsas-taldea.github.io/moon/Doc-License.html"><img src="https://img.shields.io/badge/Doc-CC--BY--SA%204.0-bf7600?longCache=true&style=flat-square&logo=CreativeCommons"></a><!--
+  -->
+</p>
+
 > MOON is an educational game where players will simulate a simple computer.
 > Help the astronauts to fulfill their mission!
 
