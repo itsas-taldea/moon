@@ -54,6 +54,13 @@ rulebook/FAQ
 ```
 
 ```{toctree}
+:caption: Development
+:hidden:
+
+dev/index
+```
+
+```{toctree}
 :caption: Appendix
 :hidden:
 
