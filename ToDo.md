@@ -1,7 +1,5 @@
 # To Do
 
-- `mv blueprints/moon-ra-err.svg blueprints/moon-ra-warn.svg` and change the colour to yellow.
-
 ## Code
 
 - Static typing.
@@ -28,6 +26,5 @@
 ## Interface
 
 - Make the whole registry be a button (the label and all the bits), not only the label.
-- Update the assets to use an style similar to the printer-friendly version; with some blur but without background.
 - Adjust spacing and scaling to better use the screen.
 - Add banner/title.
