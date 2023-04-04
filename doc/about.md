@@ -26,6 +26,6 @@ University of the Basque Country (UPV/EHU).
 
 ## Licensing
 
-- The rulebook and the design of the cards and the mat are licensed under CC BY-SA.
-- The documentation of this repository is also licensed under CC BY-SA.
-- The sources of the game implemented using Godot are licensed under Apache 2.0.
+- The rulebook and the design of the cards and the mat are licensed under {ref}`CC BY-SA <Doc-License>`.
+- The documentation of this repository is also licensed under {ref}`CC BY-SA <Doc-License>`.
+- The sources of the game implemented using Godot are licensed under {ref}`Apache 2.0 <License>`.

@@ -58,4 +58,6 @@ rulebook/FAQ
 :hidden:
 
 references
+License
+Doc-License
 ```
