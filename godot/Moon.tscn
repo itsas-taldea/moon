@@ -80,11 +80,6 @@ layout_mode = 2
 layout_mode = 2
 script = ExtResource("2_y14cr")
 
-[node name="EnergyBar" type="ProgressBar" parent="Moon/CenterContainer/Moon"]
-custom_minimum_size = Vector2(0, 25)
-layout_mode = 2
-show_percentage = false
-
 [node name="Luna" type="CenterContainer" parent="."]
 visible = false
 layout_mode = 2
