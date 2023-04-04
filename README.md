@@ -9,7 +9,7 @@ along with the rulebook and documentation in HTML using [Sphinx](https://www.sph
 Other videogame implementations of MOON exist; however, as far as we are aware, those are not open source (yet) or being
 actively developed/maintained in a public repository (at the moment):
 
-- Apparently, these are all different versions of the same implementation:
+- These are all different versions of the same implementation based on [libGDX](https://libgdx.com/):
   - [moon.deusto.es](https://moon.deusto.es/)
   - An `.apk` for Android can be downloaded from [compus.deusto.es/moon](https://compus.deusto.es/moon/).
   - [play.google.com: MOON board game](https://play.google.com/store/apps/details?id=es.deusto.moon)
