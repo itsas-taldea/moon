@@ -78,6 +78,7 @@ layout_mode = 2
 
 [node name="Energy" type="HBoxContainer" parent="Moon/CenterContainer/Moon"]
 layout_mode = 2
+alignment = 1
 script = ExtResource("2_y14cr")
 
 [node name="Luna" type="CenterContainer" parent="."]

@@ -37,7 +37,6 @@ var wordlength : int = 4
 func _ready():
 	for idx in 16:
 		_textures_goals.append(load("res://assets/goals/%02d.png" % idx))
-	_Energy_setup()
 	_Key_and_Goals_setup()
 	_Registers_setup()
 	_Operations_setup()
@@ -50,14 +49,10 @@ func _ready():
 	registers["C"].Value = 1
 	registers["D"].Value = 3
 
-	$Energy.set_Value(5)
+	$Energy.Energy = 5
 
 	_shuffle()
 	_next_goal()
-
-func _Energy_setup():
-	for idx in 6:
-		Utils.TextureRect_setup($Energy.get_node("E%s" % idx))
 
 func _Key_and_Goals_setup():
 	for idx in range(wordlength-1,-1,-1):

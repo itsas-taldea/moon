@@ -1,26 +1,45 @@
 extends HBoxContainer
 
-var _texture_empty : Texture2D = load("res://assets/Empty.png")
-var _texture_full : Texture2D = load("res://assets/Full.png")
+const _textures = [
+	preload("res://assets/Empty.png"),
+	preload("res://assets/Half.png"),
+	preload("res://assets/Full.png"),
+]
+
+var Capacity : int :
+	get:
+		return Capacity
+	set(val):
+		if Capacity == val:
+			return
+		var last_node = (Capacity/2)-1
+		if Capacity > val:
+			for idx in (Capacity-val)/2:
+				self.get_node("E%d" % (last_node - idx)).queue_free()
+		elif Capacity < val:
+			for idx in (val-Capacity)/2:
+				Utils.TextureRect_setup(
+					Utils.Add_named_child(
+						self,
+						TextureRect.new(),
+						"E%d" % (last_node + idx + 1 )
+					)
+				)
+		Capacity = val
+		Energy = min(Energy, val)
+
+var Energy : int:
+	get:
+		return Energy
+	set(val):
+		assert(val >= 0, "Energy value cannot be negative!")
+		assert(val <= Capacity, "Energy value cannot be larger than %d!" % Capacity)
+		Energy = val
+		# FIXME The following is hardcoded for Capacity=6.
+		# Need to adjust it for any value of Capacity.
+		$E0.set_texture(_textures[2 if val > 1 else val])
+		$E1.set_texture(_textures[2 if val > 3 else 0 if val < 2 else val-2])
+		$E2.set_texture(_textures[0 if val < 4 else val-4])
 
 func _ready():
-	for idx in 6:
-		var node = TextureRect.new()
-		node.set_name("E%s" % idx)
-		self.add_child(node)
-
-func _int_to_texture(val: int):
-	if bool(val):
-		return _texture_full
-	else:
-		return _texture_empty
-
-func set_Value(val: int):
-	assert(val >= 0, "Energy value cannot be negative!")
-	assert(val <= 6, "Energy value cannot be larger than 6!")
-	$E0.set_texture(_int_to_texture(val > 0))
-	$E1.set_texture(_int_to_texture(val > 1))
-	$E2.set_texture(_int_to_texture(val > 2))
-	$E3.set_texture(_int_to_texture(val > 3))
-	$E4.set_texture(_int_to_texture(val > 4))
-	$E5.set_texture(_int_to_texture(val > 5))
+	Capacity = 6
