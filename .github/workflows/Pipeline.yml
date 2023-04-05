@@ -13,7 +13,26 @@ env:
 jobs:
 
 
+  container:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v3
+
+      - run: docker build -t ghcr.io/itsas-taldea/godot/export container
+
+      - name: Push to ghcr.io
+        uses: pyTooling/Actions/with-post-step@r0
+        with:
+          main: |
+            echo '${{ github.token }}' | docker login ghcr.io -u gha --password-stdin
+            docker push ghcr.io/itsas-taldea/godot/export
+          post: docker logout ghcr.io
+
+
   build:
+    needs: container
     runs-on: ubuntu-latest
     name: ${{ matrix.name }}
     strategy:
@@ -46,8 +65,6 @@ jobs:
       - uses: actions/checkout@v3
 
       - run: mkdir -p godot/"$(dirname '${{ matrix.path }}')"
-
-      - run: docker build -t ghcr.io/itsas-taldea/godot/export container
 
       - run: >-
           docker run --rm
