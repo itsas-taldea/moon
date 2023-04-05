@@ -11,8 +11,8 @@ func _int2bin(value):
 		value = value >> 1
 	return out
 
-func _add_label(name, text):
-	var node = Utils.Add_named_child(self, Label.new(), name)
+func _add_label(node_name, text):
+	var node = Utils.Add_named_child(self, Label.new(), node_name)
 	node.text = text
 	node.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	node.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
