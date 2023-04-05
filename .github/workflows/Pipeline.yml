@@ -66,11 +66,11 @@ jobs:
 
       - run: mkdir -p godot/"$(dirname '${{ matrix.path }}')"
 
-      - run: >-
-          docker run --rm
-          -v $(pwd):/wrk -w /wrk/godot
-          ghcr.io/itsas-taldea/godot/export
-          gexport --export-release '${{ matrix.preset }}' '${{ matrix.path }}'
+      - uses: docker://ghcr.io/itsas-taldea/godot/export
+        env:
+          GODOT_EXPORT_SUBDIR: godot
+        with:
+          args: gexport --export-release ${{ matrix.preset }} ${{ matrix.path }}
 
       - name: '📤 Upload artifact'
         uses: 'actions/upload-artifact@v3'

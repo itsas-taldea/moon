@@ -11,4 +11,6 @@ ln -s \
   /usr/local/share/godot/export_templates/"${GODOT_VERSION}.stable" \
   $local_templates/"${GODOT_VERSION}.stable"
 
+if [ -n "$GODOT_EXPORT_SUBDIR" ]; then cd "$GODOT_EXPORT_SUBDIR"; fi
+
 godot --headless "$@"
