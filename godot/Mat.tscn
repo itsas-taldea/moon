@@ -1,12 +1,12 @@
 [gd_scene load_steps=8 format=3 uid="uid://delfmfk6gvvf1"]
 
-[ext_resource type="Script" path="res://Moon.gd" id="1_7ymtn"]
-[ext_resource type="FontFile" uid="uid://b0mofgntocx20" path="res://assets/Zygo.ttf" id="2_x5x1n"]
-[ext_resource type="Script" path="res://Energy.gd" id="2_y14cr"]
-[ext_resource type="Script" path="res://Workload.gd" id="3_k8wkp"]
-[ext_resource type="Script" path="res://Luna.gd" id="4_6dko7"]
-[ext_resource type="Script" path="res://RAM.gd" id="5_sccyn"]
-[ext_resource type="Texture2D" uid="uid://brjnf6m6rwq8n" path="res://assets/Luna-low.png" id="6_7macg"]
+[ext_resource type="Script" path="res://Moon.gd" id="1_0150s"]
+[ext_resource type="FontFile" uid="uid://b0mofgntocx20" path="res://assets/Zygo.ttf" id="2_257r4"]
+[ext_resource type="Script" path="res://Workload.gd" id="3_ttp0d"]
+[ext_resource type="Script" path="res://Energy.gd" id="4_k8np3"]
+[ext_resource type="Script" path="res://Luna.gd" id="5_ups75"]
+[ext_resource type="Script" path="res://RAM.gd" id="6_alj0l"]
+[ext_resource type="Texture2D" uid="uid://brjnf6m6rwq8n" path="res://assets/Luna-low.png" id="7_y4mfi"]
 
 [node name="Mat" type="TabContainer"]
 anchors_preset = 15
@@ -26,11 +26,11 @@ size_flags_vertical = 3
 
 [node name="Moon" type="VBoxContainer" parent="Moon/CenterContainer"]
 layout_mode = 2
-script = ExtResource("1_7ymtn")
+script = ExtResource("1_0150s")
 
 [node name="Label" type="Label" parent="Moon/CenterContainer/Moon"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_x5x1n")
+theme_override_fonts/font = ExtResource("2_257r4")
 theme_override_font_sizes/font_size = 50
 text = "1110011"
 horizontal_alignment = 1
@@ -44,7 +44,7 @@ show_percentage = false
 [node name="Workload" type="HBoxContainer" parent="Moon/CenterContainer/Moon"]
 custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
-script = ExtResource("3_k8wkp")
+script = ExtResource("3_ttp0d")
 
 [node name="HSepTop" type="HSeparator" parent="Moon/CenterContainer/Moon"]
 custom_minimum_size = Vector2(0, 15)
@@ -85,7 +85,7 @@ layout_mode = 2
 [node name="Energy" type="HBoxContainer" parent="Moon/CenterContainer/Moon"]
 layout_mode = 2
 alignment = 1
-script = ExtResource("2_y14cr")
+script = ExtResource("4_k8np3")
 
 [node name="Luna" type="CenterContainer" parent="."]
 visible = false
@@ -93,7 +93,7 @@ layout_mode = 2
 
 [node name="Luna" type="HBoxContainer" parent="Luna"]
 layout_mode = 2
-script = ExtResource("4_6dko7")
+script = ExtResource("5_ups75")
 
 [node name="CPU" type="VBoxContainer" parent="Luna/Luna"]
 layout_mode = 2
@@ -101,7 +101,7 @@ alignment = 1
 
 [node name="Label" type="Label" parent="Luna/Luna/CPU"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_x5x1n")
+theme_override_fonts/font = ExtResource("2_257r4")
 theme_override_font_sizes/font_size = 50
 text = "LUNA"
 horizontal_alignment = 1
@@ -116,7 +116,7 @@ layout_mode = 2
 [node name="RAM" type="GridContainer" parent="Luna/Luna"]
 layout_mode = 2
 columns = 9
-script = ExtResource("5_sccyn")
+script = ExtResource("6_alj0l")
 
 [node name="VSeparator2" type="VSeparator" parent="Luna/Luna"]
 custom_minimum_size = Vector2(40, 0)
@@ -128,7 +128,7 @@ layout_mode = 2
 [node name="TextureRect" type="TextureRect" parent="Luna/Luna/VBoxContainer"]
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
-texture = ExtResource("6_7macg")
+texture = ExtResource("7_y4mfi")
 expand_mode = 1
 stretch_mode = 5
 
