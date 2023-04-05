@@ -40,24 +40,20 @@ jobs:
       matrix:
         include:
 
-          - preset: HTML5
+          - name: HTML5
             path: ./dist/html5/index.html
-            name: HTML5
             upload: godot/dist/html5/*
 
-          - preset: Linux/X11
+          - name: Linux
             path: ./dist/lin/moon.linux.x86_64
-            name: Linux
             upload: godot/dist/lin/*
 
-          - preset: Windows Desktop
+          - name: Windows
             path: ./dist/win/moon.windows.x86_64.exe
-            name: Windows
             upload: godot/dist/win/*
 
-          - preset: macOS
+          - name: macOS
             path: ./dist/mac/moon.macos.zip
-            name: MacOS
             upload: godot/dist/mac/*
 
     steps:
@@ -70,7 +66,7 @@ jobs:
         env:
           GODOT_EXPORT_SUBDIR: godot
         with:
-          args: gexport --export-release ${{ matrix.preset }} ${{ matrix.path }}
+          args: gexport --export-release ${{ matrix.name }} ${{ matrix.path }}
 
       - name: '📤 Upload artifact'
         uses: 'actions/upload-artifact@v3'
@@ -163,7 +159,7 @@ jobs:
           mkdir tip
           cd artifacts
           tree
-          cp Linux/moon.linux.x86_64 ./Windows/moon.windows.x86_64.exe MacOS/moon.macos.zip ../tip/
+          cp Linux/moon.linux.x86_64 ./Windows/moon.windows.x86_64.exe macOS/moon.macos.zip ../tip/
 
       - name: Upload artifacts as assets of pre-release 'tip'
         run: GITHUB_TOKEN='${{ github.token }}' gh release upload --clobber tip tip/*
